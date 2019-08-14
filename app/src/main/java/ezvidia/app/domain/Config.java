@@ -5,14 +5,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import ezvidia.app.R;
-
 public class Config {
 
     private String name;
 
     public Config(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void render(Context context, ViewGroup view) {

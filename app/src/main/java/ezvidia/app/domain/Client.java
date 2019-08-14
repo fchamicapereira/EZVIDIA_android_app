@@ -21,7 +21,7 @@ public class Client {
     private final String CMD_LIST = "LIST";
     private final String CONFIG_SEPARATOR = ";;";
 
-    public Client(String server_address) throws UnknownHostException, SocketException {
+    public void connect(String server_address) throws UnknownHostException, SocketException {
         String[] splitted = server_address.split("\\.");
 
         if (splitted.length != 4) {
@@ -36,7 +36,7 @@ public class Client {
         byte[] ipAddr = new byte[]{ b0, b1, b2, b3 };
 
         address = InetAddress.getByAddress(ipAddr);
-        socket = new DatagramSocket(PORT);
+        socket = new DatagramSocket();
 
         Log.d("CLIENT", address.getHostAddress());
     }
