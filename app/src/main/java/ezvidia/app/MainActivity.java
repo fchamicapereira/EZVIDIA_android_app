@@ -16,8 +16,12 @@ import java.util.ArrayList;
 
 import ezvidia.app.domain.Client;
 import ezvidia.app.domain.Config;
+import ezvidia.app.tasks.ApplyConfigTask;
+import ezvidia.app.tasks.ListConfigsTask;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MainActivity activity = this;
 
     private LinearLayout configs_container;
     private TextView server_label;
@@ -38,9 +42,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             client = new Client();
             client.connect(server_address);
-
-            //ArrayList<Config> configs = client.list();
-            //renderConfigs(configs);
         } catch (UnknownHostException e) {
             Log.e("UnknownHostException", "Invalid address", e);
         } catch (SocketException e) {
@@ -61,37 +62,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refresh(View v) {
-        new Refresh(this, client).execute();
+        new ListConfigsTask(this, client).execute();
     }
 
-    private class Refresh extends AsyncTask<String, Void, ArrayList<Config>> {
 
-        Client client;
-        MainActivity activity;
+    public View.OnClickListener applyListener = new View.OnClickListener(){
 
-        public Refresh(MainActivity activity, Client client) {
-            this.client = client;
-            this.activity = activity;
+        public void onClick(View v) {
+            Button button_config = (Button) v;
+            new ApplyConfigTask(activity, client, button_config.getText().toString()).execute();
         }
+    };
 
-        @Override
-        protected ArrayList<Config> doInBackground(String... params) {
-            ArrayList<Config> configs = new ArrayList<>();
-
-            try {
-                configs = client.list();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return configs;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Config> configs) {
-            activity.renderConfigs(configs);
-        }
-    }
 
     public void updateServer(String address) {
         this.server_address = address;

@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import ezvidia.app.MainActivity;
+
 public class Config {
 
     private String name;
@@ -17,10 +19,11 @@ public class Config {
         return this.name;
     }
 
-    public void render(Context context, ViewGroup view) {
-        Button myButton = new Button(context);
+    public void render(MainActivity activity, ViewGroup view) {
+        Button myButton = new Button(activity);
         myButton.setText(name);
         myButton.setHeight(250);
+        myButton.setOnClickListener(activity.applyListener);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

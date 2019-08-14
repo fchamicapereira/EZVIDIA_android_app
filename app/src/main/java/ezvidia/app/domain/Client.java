@@ -18,7 +18,9 @@ public class Client {
 
     private final int PORT = 48541;
     private final int TIMEOUT = 10 * 1000; // 10 seconds
+
     private final String CMD_LIST = "LIST";
+    private final String CMD_APPLY = "APPLY";
     private final String CONFIG_SEPARATOR = ";;";
 
     public void connect(String server_address) throws UnknownHostException, SocketException {
@@ -77,6 +79,43 @@ public class Client {
         }
 
         return configs;
+    }
+
+    public boolean apply(String config) throws IOException {
+
+        String command = String.format("%s %s", CMD_APPLY, config);
+
+        if (socket == null) {
+            throw new SocketException("Socket not initialized");
+        }
+
+        DatagramPacket dp = new DatagramPacket(command.getBytes(), command.getBytes().length, address, PORT);
+
+        if (dp == null) {
+            throw new IOException("Null buffer");
+        }
+
+        socket.send(dp);
+
+        byte[] message = new byte[512];
+        DatagramPacket packet = new DatagramPacket(message,message.length);
+
+        try {
+            socket.setSoTimeout(TIMEOUT);
+            socket.receive(packet);
+
+            String response = new String(message, 0, packet.getLength());
+
+            if (response.equals("OK")) {
+                return true;
+            }
+
+        } catch (SocketTimeoutException e) {
+            Log.e("Timeout Exception","UDP Connection:",e);
+            socket.close();
+        }
+
+        return false;
     }
 
 }
