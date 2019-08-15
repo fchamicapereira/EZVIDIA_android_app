@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EZVIDIA</string>
+    <string name="shared_preferences">PREFERENCES</string>
 </resources>

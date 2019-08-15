@@ -24,6 +24,11 @@ public class ApplyConfigTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
+    protected void onPreExecute() {
+        activity.lock();
+    }
+
+    @Override
     protected Void doInBackground(String... params) {
 
         try {
@@ -44,6 +49,8 @@ public class ApplyConfigTask extends AsyncTask<String, Void, Void> {
         Toast toast = Toast.makeText(context, message, duration);
 
         toast.show();
+
+        activity.unlock();
     }
 
 }

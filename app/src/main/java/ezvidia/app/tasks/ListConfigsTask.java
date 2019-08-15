@@ -20,6 +20,11 @@ public class ListConfigsTask extends AsyncTask<String, Void, ArrayList<Config>> 
     }
 
     @Override
+    protected void onPreExecute() {
+        activity.lock();
+    }
+
+    @Override
     protected ArrayList<Config> doInBackground(String... params) {
         ArrayList<Config> configs = new ArrayList<>();
 
@@ -35,6 +40,7 @@ public class ListConfigsTask extends AsyncTask<String, Void, ArrayList<Config>> 
     @Override
     protected void onPostExecute(ArrayList<Config> configs) {
         activity.renderConfigs(configs);
+        activity.unlock();
     }
 
 }
