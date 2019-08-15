@@ -19,6 +19,8 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class SetAddressPopupWindow extends PopupWindow {
 
+    private boolean isOpen = false;
+
     private View popupView;
     private PopupWindow set_server_popup;
     private MainActivity parent;
@@ -44,6 +46,8 @@ public class SetAddressPopupWindow extends PopupWindow {
 
         set_server_popup = new PopupWindow(popupView, width, height, true);
         set_server_popup.showAtLocation(root, Gravity.CENTER, 0, 0);
+
+        isOpen = true;
 
         dimBackground();
 
@@ -91,16 +95,21 @@ public class SetAddressPopupWindow extends PopupWindow {
             }
         });
 
-        parent.lock();
     }
 
     public void close() {
+        if (!isOpen || popupView == null) return;
+
         undimBackground();
         set_server_popup.dismiss();
-        parent.unlock();
+
+        isOpen = false;
     }
 
     private void dimBackground() {
+
+        if (!isOpen || popupView == null) return;
+
         View root = popupView.getRootView();
         Context context = set_server_popup.getContentView().getContext();
 
@@ -114,6 +123,9 @@ public class SetAddressPopupWindow extends PopupWindow {
     }
 
     private void undimBackground() {
+
+        if (!isOpen || popupView == null) return;
+
         View root = popupView.getRootView();
         Context context = set_server_popup.getContentView().getContext();
 

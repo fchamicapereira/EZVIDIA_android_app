@@ -1,22 +1,12 @@
 package ezvidia.app;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroupOverlay;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 

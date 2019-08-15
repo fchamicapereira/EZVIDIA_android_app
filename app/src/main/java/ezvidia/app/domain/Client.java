@@ -25,23 +25,14 @@ public class Client {
     private final String CMD_APPLY = "APPLY";
     private final String CONFIG_SEPARATOR = ";;";
 
-    private Pattern ipPattern;
+    private Pattern pattern;
 
     public Client() {
-        ipPattern = Pattern.compile(
-                "(^192\\.168\\.([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])$)|(^172\\." +
-                        "([1][6-9]|[2][0-9]|[3][0-1])\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])$)|(^10\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
-                        "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])$)");
-
+        pattern = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
     }
 
     public boolean validateIpAddress(String address) {
-        Matcher m = ipPattern.matcher(address);
+        Matcher m = pattern.matcher(address);
         return m.matches();
     }
 
