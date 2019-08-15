@@ -24,9 +24,12 @@ public class SetAddressPopupWindow extends PopupWindow {
     private MainActivity parent;
     private Client client;
 
+    private SetAddressPopupWindow instance;
+
     public SetAddressPopupWindow(MainActivity activity, Client parent_client) {
         parent = activity;
         client = parent_client;
+        instance = this;
     }
 
     public void open() {
@@ -87,11 +90,14 @@ public class SetAddressPopupWindow extends PopupWindow {
 
             }
         });
+
+        parent.lock();
     }
 
     public void close() {
         undimBackground();
         set_server_popup.dismiss();
+        parent.unlock();
     }
 
     private void dimBackground() {
@@ -119,4 +125,5 @@ public class SetAddressPopupWindow extends PopupWindow {
         p.dimAmount = 0.0f;
         wm.updateViewLayout(root, p);
     }
+
 }

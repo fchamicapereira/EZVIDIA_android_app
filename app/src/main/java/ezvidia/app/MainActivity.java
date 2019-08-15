@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        set_address_popup.close();
+
         if (client.getAddress().length() == 0) return;
 
         SharedPreferences.Editor editor = getSharedPreferences(

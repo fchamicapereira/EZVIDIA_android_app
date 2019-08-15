@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -18,7 +19,7 @@ public class Client {
     private InetAddress address;
 
     private final int PORT = 48541;
-    private final int TIMEOUT = 1000; // 1 seconds
+    private final int TIMEOUT = 1000; // 1 second
 
     private final String CMD_LIST = "LIST";
     private final String CMD_APPLY = "APPLY";
@@ -36,6 +37,7 @@ public class Client {
                         "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
                         "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])\\." +
                         "([0-9]|[0-9][0-9]|[0-2][0-5][0-5])$)");
+
     }
 
     public boolean validateIpAddress(String address) {
@@ -58,12 +60,10 @@ public class Client {
         byte[] ipAddr = new byte[]{ b0, b1, b2, b3 };
 
         address = InetAddress.getByAddress(ipAddr);
-
-        Log.d("CLIENT", address.getHostAddress());
     }
 
     public String getAddress() {
-        return address!= null ? address.getHostAddress() : "";
+        return address != null ? address.getHostAddress() : "";
     }
 
     public ArrayList<Config> list() throws IOException {

@@ -53,26 +53,6 @@
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="14dp" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="14dp" />
-
-        <Button
-            android:id="@+id/scan_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scan" />
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
