@@ -11,11 +11,13 @@ import ezvidia.app.MainActivity;
 import ezvidia.app.domain.Client;
 import ezvidia.app.domain.Config;
 
-public class ApplyConfigTask extends AsyncTask<String, Void, Void> {
+public class ApplyConfigTask extends AsyncTask<String, Void, Boolean> {
 
     Client client;
     MainActivity activity;
     String config;
+
+    final int DELAY = 3000; // 3 seconds
 
     public ApplyConfigTask(MainActivity activity, Client client, String config) {
         this.client = client;
@@ -29,19 +31,34 @@ public class ApplyConfigTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected Boolean doInBackground(String... params) {
 
         try {
             client.apply(config);
         } catch (IOException e) {
-            e.printStackTrace();
+            return new Boolean(false);
+
         }
 
-        return null;
+        return new Boolean(true);
     }
 
     @Override
-    protected void onPostExecute(Void voids) {
+    protected void onPostExecute(Boolean success) {
+
+        if (!success.booleanValue()) {
+
+            String message = "No response from server";
+            int duration = Toast.LENGTH_SHORT;
+
+            Context context = activity.getApplicationContext();
+            Toast toast = Toast.makeText(context, message, duration);
+
+            toast.show();
+
+            return;
+        }
+
         String message = String.format("Applied configuration \"%s\"", config);
         int duration = Toast.LENGTH_SHORT;
 
@@ -50,7 +67,7 @@ public class ApplyConfigTask extends AsyncTask<String, Void, Void> {
 
         toast.show();
 
-        activity.unlock();
+        activity.unlock(DELAY);
     }
 
 }

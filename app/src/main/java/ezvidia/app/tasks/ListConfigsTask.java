@@ -1,6 +1,8 @@
 package ezvidia.app.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ public class ListConfigsTask extends AsyncTask<String, Void, ArrayList<Config>> 
 
     Client client;
     MainActivity activity;
+    boolean error = false;
+
+    final int DELAY = 500; // 0.5 seconds
 
     public ListConfigsTask(MainActivity activity, Client client) {
         this.client = client;
@@ -31,7 +36,7 @@ public class ListConfigsTask extends AsyncTask<String, Void, ArrayList<Config>> 
         try {
             configs = client.list();
         } catch (IOException e) {
-            e.printStackTrace();
+            error = true;
         }
 
         return configs;
@@ -39,8 +44,19 @@ public class ListConfigsTask extends AsyncTask<String, Void, ArrayList<Config>> 
 
     @Override
     protected void onPostExecute(ArrayList<Config> configs) {
+
+        if (error) {
+            String message = "No response from server";
+            int duration = Toast.LENGTH_SHORT;
+
+            Context context = activity.getApplicationContext();
+            Toast toast = Toast.makeText(context, message, duration);
+
+            toast.show();
+        }
+
         activity.renderConfigs(configs);
-        activity.unlock();
+        activity.unlock(DELAY);
     }
 
 }

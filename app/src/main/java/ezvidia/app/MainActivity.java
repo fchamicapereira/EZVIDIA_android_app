@@ -1,6 +1,7 @@
 package ezvidia.app;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -142,6 +143,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void unlock(int delay) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                activity.unlock();
+            }
+        }, delay);
+    }
+
     public boolean updateServer(String address) {
         boolean success = false;
 
@@ -149,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
             client.setAddress(address);
             server_label.setText("Server: " + address);
             refresh_button.setEnabled(true);
+
+            new ListConfigsTask(this, client).execute();
 
             success = true;
         } catch (UnknownHostException e) {
@@ -158,8 +171,6 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "Unknown host", Toast.LENGTH_SHORT);
             toast.show();
         }
-
-        renderConfigs(new ArrayList<Config>());
 
         return success;
     }
